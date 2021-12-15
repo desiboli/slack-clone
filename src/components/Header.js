@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SearchIcon from "@mui/icons-material/Search";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 function Header() {
   return (
@@ -17,6 +18,9 @@ function Header() {
         <SearchIcon />
         <input placeholder="Search" type="text" />
       </HeaderSearch>
+      <HeaderRight>
+        <HelpOutlineIcon />
+      </HeaderRight>
     </HeaderContainer>
   );
 }
@@ -64,6 +68,17 @@ const HeaderLeft = styled.div`
   > .MuiSvgIcon-root {
     margin-left: auto;
     margin-right: 30px;
+  }
+`;
+
+const HeaderRight = styled.div`
+  display: flex;
+  flex: 0.3;
+  align-items: flex-end;
+
+  > .MuiSvgIcon-root {
+    margin-left: auto;
+    margin-right: 20px;
   }
 `;
 
