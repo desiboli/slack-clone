@@ -1,12 +1,14 @@
 import { Button } from "@mui/material";
 import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import React, { useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 
 function ChatInput({ channelName, channelId, chatRef }) {
   const inputRef = useRef(null);
   const [input, setInput] = useState("");
+  const [user] = useAuthState(auth);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -16,8 +18,8 @@ function ChatInput({ channelName, channelId, chatRef }) {
     const docData = {
       message: input,
       timestamp: serverTimestamp(),
-      user: "Taffo Alshammaa",
-      userImage: "",
+      user: user.displayName,
+      userImage: user.photoURL,
     };
 
     await setDoc(doc(collection(db, "rooms", channelId, "messages")), docData);
