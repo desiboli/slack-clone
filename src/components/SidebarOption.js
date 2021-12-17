@@ -1,8 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { db } from "../firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
 
-function SidebarOption({ Icon, title, addChannelOption }) {
-  const addChannel = () => {};
+function SidebarOption({ Icon, title, addChannelOption, id }) {
+  const addChannel = async () => {
+    const channelName = prompt("Please enter the channel name");
+
+    if (channelName) {
+      const docData = {
+        name: channelName,
+      };
+
+      const newData = doc(collection(db, "rooms"));
+      await setDoc(newData, docData);
+    }
+  };
 
   const selectChannel = () => {};
 
@@ -45,4 +58,7 @@ const SidebarOptionContainer = styled.div`
   }
 `;
 
-const SidebarOptionChannel = styled.div``;
+const SidebarOptionChannel = styled.h3`
+  padding: 10px 0;
+  font-weight: 300;
+`;
