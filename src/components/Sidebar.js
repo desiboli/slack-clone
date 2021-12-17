@@ -13,12 +13,14 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import { collection } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Sidebar() {
   const [channels, loading, error] = useCollection(collection(db, "rooms"));
+  const [user] = useAuthState(auth);
 
   return (
     <SidebarContainer>
