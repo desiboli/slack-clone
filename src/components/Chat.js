@@ -5,16 +5,33 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/appSlice";
 import ChatInput from "./ChatInput";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import { collection, doc, orderBy, query } from "firebase/firestore";
+import { db } from "../firebase";
+import Message from "./Message";
 
 function Chat() {
   const roomId = useSelector(selectRoomId);
+
+  const [roomDetails] = useDocument(roomId && doc(db, "rooms", roomId));
+
+  const q =
+    roomId &&
+    query(
+      collection(db, "rooms", roomId, "messages"),
+      orderBy("timestamp", "asc")
+    );
+  const [roomMessages] = useCollection(q);
+
+  console.log("DETAILS:::", roomDetails?.data());
+  console.log("MESSAGES:::", roomMessages);
 
   return (
     <ChatContianer>
       <Header>
         <HeaderLeft>
           <h4>
-            <strong>#Room-name</strong>
+            <strong>#{roomDetails?.data().name}</strong>
             <StarBorderOutlinedIcon />
           </h4>
         </HeaderLeft>
@@ -26,9 +43,23 @@ function Chat() {
         </HeaderRight>
       </Header>
 
-      <ChatMessages></ChatMessages>
+      <ChatMessages>
+        {roomMessages?.docs.map((doc) => {
+          const { message, timestamp, user, userImage } = doc.data();
 
-      <ChatInput channelName={<></>} channelId={roomId} />
+          return (
+            <Message
+              key={doc.id}
+              message={message}
+              timestamp={timestamp}
+              user={user}
+              userImage={userImage}
+            />
+          );
+        })}
+      </ChatMessages>
+
+      <ChatInput channelName={roomDetails?.data().name} channelId={roomId} />
     </ChatContianer>
   );
 }

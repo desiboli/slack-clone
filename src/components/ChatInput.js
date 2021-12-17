@@ -11,8 +11,6 @@ function ChatInput({ channelName, channelId }) {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    console.log("APOR!!!", channelId);
-
     if (!channelId) return false;
 
     const docData = {
@@ -34,7 +32,7 @@ function ChatInput({ channelName, channelId }) {
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={`Message #ROOM`}
+          placeholder={`Message #${channelName}`}
         />
         <Button hidden type="submit" onClick={sendMessage}>
           SEND
