@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
 
-function ChatInput({ channelName, channelId }) {
+function ChatInput({ channelName, channelId, chatRef }) {
   const inputRef = useRef(null);
   const [input, setInput] = useState("");
 
@@ -21,6 +21,10 @@ function ChatInput({ channelName, channelId }) {
     };
 
     await setDoc(doc(collection(db, "rooms", channelId, "messages")), docData);
+
+    chatRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
 
     setInput("");
   };
